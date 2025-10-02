@@ -48,14 +48,14 @@ button:active {
 }
 
 /* Reset button styled differently */
-button:last-of-type {
+button:nth-last-of-type(-n+2) {
   font-size: 18px;
   border-radius: 10px;
   padding: 12px 25px;
   background: #ff5e62;
 }
 
-button:last-of-type:hover {
+button:nth-last-of-type(-n+2):hover {
   background: #ff2e4d;
 }
 

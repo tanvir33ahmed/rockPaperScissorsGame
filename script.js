@@ -4,6 +4,21 @@ let score = JSON.parse(localStorage.getItem('score')) || {
   tie: 0,
 };
 updateScoreElement();
+let isAutoPlay = false;
+let intervalId;
+function autoPlay(){
+  if(!isAutoPlay){
+    intervalId = setInterval(function(){
+      const playerMove = pickComputerMove();
+      playGame(playerMove);
+    },1000)
+    isAutoPlay = true;
+  }else{
+    clearInterval(intervalId);
+    isAutoPlay = false;
+  }
+
+}
 
 function updateScoreElement(){
   document.querySelector('.js-score')
@@ -18,14 +33,26 @@ function pickComputerMove() {
 function playGame(playerMove) {
   const computerMove = pickComputerMove();
   let result = '';
+  
+ if (playerMove === 'reset') {
+  score.wins = 0;
+  score.lose = 0;
+  score.tie = 0;
 
-  if (playerMove === 'reset') {
-    score.wins = 0;
-    score.lose = 0;
-    score.tie = 0;
-    localStorage.setItem('score', JSON.stringify(score));
-    updateScoreElement();
-    alert("Score reset!");
+  localStorage.setItem('score', JSON.stringify(score));
+  updateScoreElement();
+
+  // Clear UI
+  document.querySelector('.js-result').innerHTML = "Score reset!";
+  document.querySelector('.js-moves').innerHTML = "";
+
+  // Stop autoplay if running
+  clearInterval(intervalId);
+  isAutoPlay = false;
+
+  return;
+ }if(playerMove === 'autoPlay'){
+    autoPlay();
     return;
   }
 
